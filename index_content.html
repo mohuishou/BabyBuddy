@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+
+	<head>
+		<title></title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+
+		<link rel="stylesheet" href="css/fonts/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="css/base.min.css" />
+
+		<style>
+			html,
+			body {
+				width: 100%;
+				height: 100%;
+				background: #efefef;
+			}
+			
+			.topFrame {
+				/*background: #6AB494;*/
+				width: 100%;
+				height: 60%;
+			}
+			
+			.mainFrame {
+				width: 100%;
+				height: 40%;
+				/*background: #fff;*/
+				padding-top: 1.2em;
+			}
+			
+			.btnFrame {
+				text-align: center;
+				margin-top: -4em;
+				margin-bottom: 1em;
+			}
+			
+			.col-xx-4 {
+				text-align: center;
+				color: #999999;
+			}
+			
+			.row2 {
+				margin-top: 1em;
+			}
+		</style>
+	</head>
+
+	<body ontouchstart>
+		<div class="topFrame" id="topFrame"></div>
+		<div class="btnFrame">
+			<button onclick="getHealthData();" class="btn btn-brand  waves-light waves-attach waves-button">手动检测</button>
+		</div>
+
+		<div class="mainFrame container">
+			<div class="row">
+				<div class="col-xx-4">
+					<a onclick="healthPlay('light');" class="fbtn fbtn-brand waves-light waves-attach waves-button">
+						<img class="icon" src="img/icon/iconfont-light.png"></a>
+					光照
+				</div>
+				<div class="col-xx-4">
+					<a onclick="healthPlay('sound');" class="fbtn fbtn-brand waves-light waves-attach waves-button">
+						<img class="icon" src="img/icon/iconfont-shengyin.png"></a>
+					声音
+				</div>
+				<div class="col-xx-4">
+					<a onclick="healthPlay('sleep');" class="fbtn fbtn-brand waves-light waves-attach waves-button">
+						<img class="icon" src="img/icon/iconfont-shuimian.png"></a>
+					睡眠
+				</div>
+
+			</div>
+			<!--<div class="hr"></div>
+	-->
+			<div class="row row2">
+				<div class="col-xx-4">
+					<a onclick="healthPlay('temp');" class="fbtn fbtn-brand waves-light waves-attach waves-button">
+						<img class="icon" src="img/icon/iconfont-wendu.png"></a>
+					温度
+				</div>
+				<div class="col-xx-4">
+					<a class="fbtn fbtn-brand waves-light waves-attach waves-button" onclick="openWin('vedio');">
+						<img class="icon" src="img/icon/iconfont-shipin.png"></a>
+					视频
+				</div>
+				<div class="col-xx-4">
+					<a class="fbtn fbtn-brand waves-light waves-attach waves-button" onclick="openWin('music');">
+						<img class="icon" src="img/icon/iconfont-yinle.png"></a>
+					音乐
+				</div>
+			</div>
+		</div>
+		<div aria-hidden="true" class="modal fade" id="healthPlay" role="dialog" tabindex="-1">
+			<div class="modal-dialog modal-xs">
+				<div class="modal-content" style="text-align: center;">
+
+					<div class="modal-inner " style="padding: 0;margin-top: 0px">
+						<nav class="tab-nav tab-nav-brand " style="margin-top: 0px">
+							<ul class="nav nav-justified">
+								<li class="active">
+									<a data-toggle="tab" class="now" href="#now">当前</a>
+								</li>
+								<li>
+									<a data-toggle="tab" onclick="historyHealth();" class="history" href="#history">历史</a>
+								</li>
+							</ul>
+						</nav>
+						<div class="tab-content">
+							<div role="tabpanel" class="tab-pane active" id="now">
+								<div>123</div>
+							</div>
+
+							<div role="tabpanel" class="tab-pane" id="history">
+								<div>加载中...</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<a style="font-size:17px;text-align:center;" class="btn btn-flat btn-brand waves-attach waves-button waves-effect" data-dismiss="modal">关闭</a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<script src="js/appcan/appcan.js"></script>
+		<script src="js/appcan/appcan.control.js"></script>
+		<script src="js/lib/echarts.min.js"></script>
+		<script src="js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/lib/base.min.js"></script>
+		<script src="js/index.js"></script>
+		<script type="text/javascript">
+			/**
+			 *页面初始化 
+			 */
+			var nowData;
+			appcan.ready(function() {
+				health();
+				setInterval(function() {
+					getHealthData();
+				}, 2000);
+			});
+
+			function openWin(page) {
+				appcan.frame.open({
+					id: page,
+					url: page+'.html',
+					top:0,
+					left:0
+				});
+			}
+		</script>
+
+		<script>
+			function healthPlay(type) {
+				var lightArr = ['很暗，适合睡眠', '偏暗，较为适合睡眠', '适中', '偏亮，建议稍微调低灯光亮度', '很亮,建议调低灯光亮度'];
+				var soundArr = ['静谧', '安静', '少许杂音', '有杂音，建议查看孩子是否哭泣，并给孩子换一个稍微安静的环境', '有噪音，建议查看孩子是否哭泣，建议给孩子换一个安静的环境'];
+				var sleepArr = ['良好', '一般'];
+				switch (type) {
+					case 'light':
+						$('#now div').text(lightArr[nowData[type]]);
+						healthModal('light', '光照');
+						break;
+					case 'temp':
+						$('#now div').text(nowData[type] + '°C');
+						healthModal('temp', '温度');
+						break;
+					case 'sound':
+						$('#now div').text(soundArr[nowData[type]]);
+						healthModal('sound', '声音');
+						break;
+					case 'sleep':
+						$('#now div').text(sleepArr[nowData[type]]);
+						healthModal('sleep', '睡眠');
+						break;
+				}
+			}
+
+			function healthModal(type, info) {
+				$('#healthPlay .now').text('当前' + info);
+				$('#healthPlay .history').text('历史' + info);
+				$('#healthPlay').modal('show');
+			}
+
+			function historyHealth() {
+			}
+		</script>
+
+	</body>
+
+</html>

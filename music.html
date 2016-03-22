@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+		<title></title>
+
+		<link rel="stylesheet" type="text/css" href="css/base.min.css" />
+		<style>
+			html,
+			body {
+				height: 100%;
+				width: 100%;
+				background: #fcfcfc;
+			}
+			
+			.header {
+				padding: 0;
+			}
+			
+			.header p {
+				margin: 0;
+			}
+			
+			#musicList {
+				margin: 0;
+			}
+			
+			#footer {
+				position: fixed;
+				bottom: 0px;
+				width: 100%;
+				z-index: 99999 !important;
+			}
+			
+			#footer p {
+				/*text-align: center;*/
+				color: #636363;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="musicList" class="tile-wrap">
+
+		</div>
+		<footer id="footer">
+			<p>当前播放：</p>
+			<div>
+				<button disabled="disabled" class="btn col-xx-6" id="nowPlay">暂未选择</button>
+				<button onclick="musicPlay(2,this);" class="btn col-xx-2 btn-brand waves-attach waves-effect waves-button waves-light"><img src="img/iconfont-pause.png" class="icon"></button>
+				<button onclick="musicPlay(3,this);" class="btn col-xx-2 btn-brand waves-attach waves-effect waves-button waves-light"><img src="img/iconfont-stop.png" class="icon"></button>
+				<button data-toggle="modal" href="#addMusic" class="btn col-xx-2 btn-brand waves-attach waves-effect waves-button waves-light"><span class="icon">add</span></button>
+
+			</div>
+
+		</footer>
+		<div aria-hidden="true" class="modal fade" id="addMusic" role="dialog" tabindex="-1">
+			<div class="modal-dialog modal-xs">
+				<div class="modal-content" style="text-align: center;">
+					<div class="modal-heading">
+						<h2 class="modal-title" style="text-align: center;margin: 0;">请输入云端地址</h2></div>
+					<div class="modal-inner" style="padding: 0;">
+						<div class="form-group form-group-label">
+							<label class="floating-label" for="path">mp3文件地址</label>
+							<input class="form-control" id="path" type="text" value="http://">
+						</div>
+						<div class="form-group form-group-label">
+							<label class="floating-label" for="fileName">歌曲名</label>
+							<input class="form-control" id="fileName" type="text">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button style="font-size:17px;"  onclick="musicUpdate();" class="btn  btn-flat  btn-brand waves-attach waves-effect waves-button waves-light" data-dismiss="modal">确认</button>
+						<a style="font-size:17px;" class="btn btn-flat btn-brand-accent waves-attach waves-button waves-effect" data-dismiss="modal">关闭</a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</body>
+
+	<script src="js/appcan/appcan.js"></script>
+	<script src="js/appcan/appcan.control.js"></script>
+	<script type="text/javascript" src="js/lib/jquery-2.2.1.min.js"></script>
+	<script src="js/lib/base.min.js"></script>
+
+	<script>
+		appcan.ready(function() {
+			//从云端获取播放列表
+			musicList();
+		});
+	</script>
+	<script src="js/music.js"></script>
+
+</html>
