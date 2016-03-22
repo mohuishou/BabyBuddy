@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+		<title></title>
+
+		<link rel="stylesheet" type="text/css" href="css/base.min.css" />
+		<style>
+			html,
+			body {
+				height: 100%;
+				width: 100%;
+				background: #fcfcfc;
+			}
+			
+			
+			
+			#footer {
+				position: fixed;
+				bottom: 0px;
+				right: 10px;
+
+				/*z-index: 99999 !important;*/
+			}
+			
+			#footer p {
+				/*text-align: center;*/
+				color: #636363;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		
+		<div class="form-group form-group-label">
+			<label class="floating-label" for="title">标题</label>
+			<input class="form-control" id="title" type="text">
+		</div>
+		<div class="form-group  form-group-label">
+			<label class="floating-label" for="content">内容</label>
+			<textarea class="form-control" id="content" rows="20"></textarea>
+		</div>
+		<footer id="footer">
+			<a onclick="update();" class="btn fbtn fbtn-brand waves-attach waves-circle waves-light">
+				<img src="img/icon/iconfont-queding.png" class="icon" />
+			</a>
+		</footer>
+	</body>
+
+	<script src="js/appcan/appcan.js"></script>
+	<script src="js/appcan/appcan.control.js"></script>
+	<script type="text/javascript" src="js/lib/jquery-2.2.1.min.js"></script>
+	<script src="js/lib/base.min.js"></script>
+
+	<script>
+		appcan.ready(function() {
+			//从云端获取播放列表
+			
+		});
+	</script>
+
+</html>

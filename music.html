@@ -38,6 +38,9 @@
 				/*text-align: center;*/
 				color: #636363;
 			}
+			#footer .row p{
+				text-align: center;
+			}
 		</style>
 	</head>
 
@@ -47,12 +50,23 @@
 
 		</div>
 		<footer id="footer">
-			<p>当前播放：</p>
+			<!--<p>当前播放：</p>-->
 			<div>
-				<button disabled="disabled" class="btn col-xx-6" id="nowPlay">暂未选择</button>
-				<button onclick="musicPlay(2,this);" class="btn col-xx-2 btn-brand waves-attach waves-effect waves-button waves-light"><img src="img/iconfont-pause.png" class="icon"></button>
-				<button onclick="musicPlay(3,this);" class="btn col-xx-2 btn-brand waves-attach waves-effect waves-button waves-light"><img src="img/iconfont-stop.png" class="icon"></button>
-				<button data-toggle="modal" href="#addMusic" class="btn col-xx-2 btn-brand waves-attach waves-effect waves-button waves-light"><span class="icon">add</span></button>
+				<button disabled="disabled" class="btn col-xx-12" id="nowPlay">暂未选择</button>
+				<div class="row">
+					<div class="col-xx-4">
+						<button onclick="musicPlay(2,this);" class="btn fbtn  fbtn-brand waves-attach waves-effect waves-button waves-light"><img src="img/iconfont-pause.png" class="icon"></button>
+						<p>暂停</p>
+					</div>
+					<div class="col-xx-4">
+						<button onclick="musicPlay(3,this);" class="btn  fbtn fbtn-brand waves-attach waves-effect waves-button waves-light"><img src="img/iconfont-stop.png" class="icon"></button>
+						<p>停止</p>
+					</div>
+					<div class="col-xx-4">
+						<button data-toggle="modal" href="#addMusic" class="btn  fbtn fbtn-brand waves-attach waves-effect waves-button waves-light"><span class="icon">add</span></button>
+						<p>添加</p>
+					</div>
+				</div>
 
 			</div>
 
@@ -73,7 +87,7 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button style="font-size:17px;"  onclick="musicUpdate();" class="btn  btn-flat  btn-brand waves-attach waves-effect waves-button waves-light" data-dismiss="modal">确认</button>
+						<button style="font-size:17px;" onclick="musicUpdate();" class="btn  btn-flat  btn-brand waves-attach waves-effect waves-button waves-light" data-dismiss="modal">确认</button>
 						<a style="font-size:17px;" class="btn btn-flat btn-brand-accent waves-attach waves-button waves-effect" data-dismiss="modal">关闭</a>
 					</div>
 
@@ -93,6 +107,10 @@
 			//从云端获取播放列表
 			musicList();
 		});
+
+		function closeFrame() {
+			appcan.frame.close('music');
+		}
 	</script>
 	<script src="js/music.js"></script>
 

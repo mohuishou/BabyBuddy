@@ -23,14 +23,14 @@
 				margin: 0;
 			}
 			
-			#musicList {
+			#dairyList {
 				margin: 0;
 			}
 			
 			#footer {
 				position: fixed;
 				bottom: 0px;
-				width: 100%;
+				right: 10px;
 				z-index: 99999 !important;
 			}
 			
@@ -38,48 +38,23 @@
 				/*text-align: center;*/
 				color: #636363;
 			}
+			
+			#footer .row p {
+				text-align: center;
+			}
 		</style>
 	</head>
 
 	<body>
 
-		<div id="musicList" class="tile-wrap">
+		<div id="dairyList" class="tile-wrap">
 
 		</div>
 		<footer id="footer">
-			<p>当前播放：</p>
-			<div>
-				<button disabled="disabled" class="btn col-xx-6" id="nowPlay">暂未选择</button>
-				<button onclick="musicPlay(2,this);" class="btn col-xx-2 btn-brand waves-attach waves-effect waves-button waves-light"><img src="img/iconfont-pause.png" class="icon"></button>
-				<button onclick="musicPlay(3,this);" class="btn col-xx-2 btn-brand waves-attach waves-effect waves-button waves-light"><img src="img/iconfont-stop.png" class="icon"></button>
-				<button data-toggle="modal" href="#addMusic" class="btn col-xx-2 btn-brand waves-attach waves-effect waves-button waves-light"><span class="icon">add</span></button>
-
-			</div>
-
+			<a onclick="openWrite();" class="btn fbtn fbtn-brand waves-attach waves-circle waves-light">
+				<span class="icon">add</span>
+			</a>
 		</footer>
-		<div aria-hidden="true" class="modal fade" id="addMusic" role="dialog" tabindex="-1">
-			<div class="modal-dialog modal-xs">
-				<div class="modal-content" style="text-align: center;">
-					<div class="modal-heading">
-						<h2 class="modal-title" style="text-align: center;margin: 0;">请输入云端地址</h2></div>
-					<div class="modal-inner" style="padding: 0;">
-						<div class="form-group form-group-label">
-							<label class="floating-label" for="path">mp3文件地址</label>
-							<input class="form-control" id="path" type="text" value="http://">
-						</div>
-						<div class="form-group form-group-label">
-							<label class="floating-label" for="fileName">歌曲名</label>
-							<input class="form-control" id="fileName" type="text">
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button style="font-size:17px;"  onclick="musicUpdate();" class="btn  btn-flat  btn-brand waves-attach waves-effect waves-button waves-light" data-dismiss="modal">确认</button>
-						<a style="font-size:17px;" class="btn btn-flat btn-brand-accent waves-attach waves-button waves-effect" data-dismiss="modal">关闭</a>
-					</div>
-
-				</div>
-			</div>
-		</div>
 
 	</body>
 
@@ -89,11 +64,66 @@
 	<script src="js/lib/base.min.js"></script>
 
 	<script>
+		var token = appcan.locStorage.getVal('token');
 		appcan.ready(function() {
-			//从云端获取播放列表
-			musicList();
+			//从云端获取列表
+			dairyList();
 		});
+
+		function dairyList() {
+			$('#dairyList').text('');
+			var url = 'http://192.168.155.1:8080/Match/babyBuddy/public/api/dairy';
+			$.ajax({
+				url: url,
+				type: 'get',
+				headers: {
+					'Authorization': ' Bearer ' + token
+				},
+				success: function(d) {
+					//					alert(234);
+					for (var key in d.data) {
+						$str = '<div class="tile"><div class="tile-action tile-action-show"><ul class="margin-no nav nav-list pull-right"><li><a class="text-black-sec waves-attach waves-effect"><img name="' + d.data[key].id + '"onclick="dairyUpdate(this);"class="icon"src="img/iconfont-bofang.png "></a></li><li><a class="text-black-sec waves-attach waves-effect"><img name="' + d.data[key].id + '"onclick="dairyDelete(this);"class="icon"src="img/iconfont-iconfontshanchu.png"></a></li></ul></div><div class="tile-inner"><span class="text-overflow">' + d.data[key].title + '</span></div></div>';
+						$('#dairyList').append($str);
+					}
+				},
+				error: function(e) {
+					alert("错误！");
+					console.log(e);
+				}
+			});
+		}
+
+		function dairyDelete(o) {
+			var id = $(o).attr('name');
+			var url = 'http://192.168.155.1:8080/Match/babyBuddy/public/api/dairy/delete/' + id;
+			$.ajax({
+				url: url + 'user',
+				type: 'POST',
+				headers: {
+					'Authorization': 'Bearer ' + token
+				},
+				success: function(d) {
+					alert(d.message);
+					dairyList();
+				},
+				error: function(e) {
+					alert(e);
+					console.log(e);
+				}
+			});
+		}
+
+		function openWirte() {
+			appcan.frame.open({
+				id: 'dairyWrite',
+				url: 'dairyWrite.html',
+				top: 0,
+				left: 0
+			});
+		}
+
+		function dairyUpdate() {
+		}
 	</script>
-	<script src="js/music.js"></script>
 
 </html>

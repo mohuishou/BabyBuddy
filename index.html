@@ -14,7 +14,7 @@
 		<link rel="stylesheet" href="index/css/main.css">
 		<style>
 			h1 {
-				background: #eee;
+				background: #f2f2f2;
 				color: #333;
 			}
 			
@@ -23,7 +23,7 @@
 			}
 			
 			#footer {
-				background: #eee;
+				background: #f2f2f2;
 			}
 			
 			#header {
@@ -58,7 +58,6 @@
 	<script src="js/appcan/appcan.tab.js"></script>
 	</body>
 	<script>
-		var a = $('#video1').removeClass('uhide');
 		appcan.ready(function() {
 			var titHeight = $('#header').offset().height;
 			if (!checkLogin()) return false;
@@ -68,8 +67,14 @@
 					"inPageName": "main",
 					"inUrl": "index_content.html",
 				}, {
+					"inPageName": "music",
+					"inUrl": "music.html ",
+				}, {
+					"inPageName": "vedio",
+					"inUrl": "vedio.html ",
+				}, {
 					"inPageName": "diary",
-					"inUrl": "diary.html ",
+					"inUrl": "dairy.html ",
 				}, {
 					"inPageName": "wiki",
 					"inUrl": "wiki.html",
@@ -81,7 +86,7 @@
 					tabview.moveTo(res.multiPopSelectedIndex);
 					switch (res.multiPopSelectedIndex) {
 						case 0:
-							$('h1').text('蓝牙');
+							$('h1').text('首页');
 							break;
 						case 1:
 							$('h1').text('音乐');
@@ -89,6 +94,12 @@
 						case 2:
 							$('h1').text('视频');
 							break;
+						case 3:
+							$('h1').text('日记');
+							break;
+//						case 4:
+//							$('h1').text('百科');
+//							break;
 					}
 				}
 			});
@@ -108,12 +119,20 @@
 				label: "首页",
 				icon: "fa-home"
 			}, {
+				label: "音乐",
+				icon: "fa-music"
+			}, {
+				label: "视频",
+				icon: "fa-play"
+			}, {
 				label: "日记",
 				icon: "fa-book",
-			}, {
-				label: "百科",
-				icon: "fa-search",
-			}]
+			}, 
+//			{
+//				label: "百科",
+//				icon: "fa-search",
+//			}
+			]
 		});
 		tabview.on("click", function(obj, index) { /*TAB变更时切换多浮动窗口*/
 			appcan.window.selectMultiPopover("content", index);
@@ -122,11 +141,17 @@
 					$('h1').text('首页');
 					break;
 				case 1:
-					$('h1').text('日记');
+					$('h1').text('音乐');
 					break;
 				case 2:
-					$('h1').text('百科');
+					$('h1').text('视频');
 					break;
+				case 3:
+					$('h1').text('日记');
+					break;
+//				case 4:
+//					$('h1').text('百科');
+//					break;
 			}
 		})
 		appcan.button(".nav-btn", "btn-act", function() {

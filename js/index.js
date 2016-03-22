@@ -2,9 +2,8 @@
  *打开一个新的窗口 
  * @param {Object} page 页面的名称
  */
-function openWin(page) {}
-//				getHealthData();
 
+var token = appcan.locStorage.getVal('token');
 /**
  *从服务器获取数据 
  */
@@ -14,9 +13,12 @@ function getHealthData() {
 	$.ajax({
 		type: "get",
 		url: url,
+		headers: {
+			'Authorization': 'Bearer ' + token
+		},
 		dataType: 'json',
 		success: function(d) {
-			nowData=d.data;
+			nowData = d.data;
 			gradeHandle(d.data);
 		},
 		error: function(e) {
@@ -42,7 +44,7 @@ function gradeHandle(data) {
 			break;
 		case 4:
 			grade -= 20;
-			break;	
+			break;
 		case 3:
 			grade -= 10;
 			break;
@@ -121,6 +123,37 @@ function health() {
 		option.series[0].data[0].value = grade;
 		myChart.setOption(option, true);
 	}, 2000);
+}
+var nowData;
+
+function healthPlay(type) {
+	var lightArr = ['很暗，适合睡眠', '偏暗，较为适合睡眠', '适中', '偏亮，建议稍微调低灯光亮度', '很亮,建议调低灯光亮度'];
+	var soundArr = ['静谧', '安静', '少许杂音', '有杂音，建议查看孩子是否哭泣，并给孩子换一个稍微安静的环境', '有噪音，建议查看孩子是否哭泣，建议给孩子换一个安静的环境'];
+	var sleepArr = ['良好', '一般'];
+	switch (type) {
+		case 'light':
+			$('#now div').text(lightArr[nowData[type]]);
+			healthModal('light', '光照');
+			break;
+		case 'temp':
+			$('#now div').text(nowData[type] + '°C');
+			healthModal('temp', '温度');
+			break;
+		case 'sound':
+			$('#now div').text(soundArr[nowData[type]]);
+			healthModal('sound', '声音');
+			break;
+		case 'sleep':
+			$('#now div').text(sleepArr[nowData[type]]);
+			healthModal('sleep', '睡眠');
+			break;
+	}
+}
+
+function healthModal(type, info) {
+	$('#healthPlay .now').text('当前' + info);
+	$('#healthPlay .history').text('历史' + info);
+	$('#healthPlay').modal('show');
 }
 
 // /**
