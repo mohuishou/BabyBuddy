@@ -16,7 +16,13 @@
 			}
 			
 			
-			
+			.header{
+				padding: 0;
+				
+			}
+			.header ul{
+				background: #f2f2f2;
+			}
 			#footer {
 				position: fixed;
 				bottom: 0px;
@@ -34,14 +40,20 @@
 	</head>
 
 	<body>
-		
+		<header class="header header-transparent ">
+			<ul class="nav tile nav-justified waves-attach waves-light">
+				<li>
+					<a>日记</a>
+				</li>
+			</ul>
+		</header>
 		<div class="form-group form-group-label">
 			<label class="floating-label" for="title">标题</label>
 			<input class="form-control" id="title" type="text">
 		</div>
 		<div class="form-group  form-group-label">
 			<label class="floating-label" for="content">内容</label>
-			<textarea class="form-control" id="content" rows="20"></textarea>
+			<textarea class="form-control" id="content" rows="23"></textarea>
 		</div>
 		<footer id="footer">
 			<a onclick="update();" class="btn fbtn fbtn-brand waves-attach waves-circle waves-light">
@@ -56,10 +68,31 @@
 	<script src="js/lib/base.min.js"></script>
 
 	<script>
-		appcan.ready(function() {
-			//从云端获取播放列表
+		var token = appcan.locStorage.getVal('token');
+		function update(){
+			var data={
+				'title':$('#title').val(),
+				'content':$('#content').val()
+			}
+			var url = 'http://192.168.155.1:8080/Match/babyBuddy/public/api/dairy' ;
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data:data,
+				headers: {
+					'Authorization': 'Bearer ' + token
+				},
+				success: function(d) {
+					alert(d.message);
+					appcan.frame.close('dairyWrite');
+				},
+				error: function(e) {
+					alert(e);
+					console.log(e);
+				}
+			});
 			
-		});
+		}
 	</script>
 
 </html>
