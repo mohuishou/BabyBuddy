@@ -62,6 +62,10 @@
 		appcan.ready(function() {
 			var titHeight = $('#header').offset().height;
 			if (!checkLogin()) return false;
+			uexWindow.setReportKey(0, 1);
+			uexWindow.onKeyPressed = function() {
+				uexWidgetOne.exit();
+			};
 			appcan.frame.open({ /*创建多浮动窗口*/
 				id: "content",
 				url: [{
@@ -95,9 +99,9 @@
 						case 3:
 							$('h1').text('日记');
 							break;
-//						case 4:
-//							$('h1').text('百科');
-//							break;
+							//						case 4:
+							//							$('h1').text('百科');
+							//							break;
 					}
 				}
 			});
@@ -114,22 +118,22 @@
 			hasBadge: true,
 			index: 0,
 			data: [{
-				label: "首页",
-				icon: "fa-home"
-			}, {
-				label: "音乐",
-				icon: "fa-music"
-			}, {
-				label: "视频",
-				icon: "fa-play"
-			}, {
-				label: "日记",
-				icon: "fa-book",
-			}, 
-//			{
-//				label: "百科",
-//				icon: "fa-search",
-//			}
+					label: "首页",
+					icon: "fa-home"
+				}, {
+					label: "音乐",
+					icon: "fa-music"
+				}, {
+					label: "视频",
+					icon: "fa-play"
+				}, {
+					label: "日记",
+					icon: "fa-book",
+				},
+				//			{
+				//				label: "百科",
+				//				icon: "fa-search",
+				//			}
 			]
 		});
 		tabview.on("click", function(obj, index) { /*TAB变更时切换多浮动窗口*/
@@ -147,9 +151,9 @@
 				case 3:
 					$('h1').text('日记');
 					break;
-//				case 4:
-//					$('h1').text('百科');
-//					break;
+					//				case 4:
+					//					$('h1').text('百科');
+					//					break;
 			}
 		})
 		appcan.button(".nav-btn", "btn-act", function() {
