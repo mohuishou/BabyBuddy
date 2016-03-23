@@ -157,22 +157,22 @@ appcan.button("#login", "ani-act", function() {
 /**
  * 呼叫按钮
  */
-appcan.button("#call", "ani-act", function() {
-	var btnName = $("#call").attr('name');
-	if (btnName == "call") {
-		$("#call").text("呼叫中，请稍候...");
-		//  		var url = "http://lxl520.com/kehu/wlcbs/index.php/Home/Index/vedio/act/1";
-		//  		appcan.request.getJSON(url, function(a) {
-		//  			window.setTimeout(call, 5000);
-		//  		});
-	} else if (btnName = "accept") {
-		$("#call").text("接听中，请稍候...");
-		accept();
-	}
-	// else if(btnName='hangUp'){
-	//     hangUp();
-	// }
-});
-appcan.button("#hangUp", "ani-act", function() {
-	hangUp();
-});
+//appcan.button("#call", "ani-act", function() {
+//	var btnName = $("#call").attr('name');
+//	if (btnName == "call") {
+//		$("#call").text("呼叫中，请稍候...");
+//		//  		var url = "http://lxl520.com/kehu/wlcbs/index.php/Home/Index/vedio/act/1";
+//		//  		appcan.request.getJSON(url, function(a) {
+//		//  			window.setTimeout(call, 5000);
+//		//  		});
+//	} else if (btnName = "accept") {
+//		$("#call").text("接听中，请稍候...");
+//		accept();
+//	}
+//	// else if(btnName='hangUp'){
+//	//     hangUp();
+//	// }
+//});
+//appcan.button("#hangUp", "ani-act", function() {
+//	hangUp();
+//});

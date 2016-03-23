@@ -51,7 +51,7 @@
 
 		</div>
 		<footer id="footer">
-			<a onclick="openWrite();" class="btn fbtn fbtn-brand waves-attach waves-circle waves-light">
+			<a href="#dairyUpdate" data-toggle="modal" class="btn fbtn fbtn-brand waves-attach waves-circle waves-light">
 				<span class="icon">add</span>
 			</a>
 		</footer>
@@ -59,9 +59,15 @@
 			<div class="modal-dialog modal-xs">
 				<div class="modal-content" style="text-align: center;">
 					<div class="modal-heading">
-						<h2 class="modal-title" style="text-align: center;margin: 0;">修改</h2></div>
+						<h2 class="modal-title" style="text-align: center;margin: 0;">日记</h2></div>
 					<div class="modal-inner" style="padding: 0;">
-						
+						<input type="hidden" id="dairyId" />
+						<div class="form-group form-group-label">
+							<label class="floating-label" for="title">标题</label><input class="form-control" id="title" type="text">
+						</div>
+						<div class="form-group form-group-label">
+							<label class="floating-label" for="content">内容</label><textarea class="form-control" id="content" rows="10"></textarea>
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button style="font-size:17px;" onclick="update();" class="btn  btn-flat  btn-brand waves-attach waves-effect waves-button waves-light" data-dismiss="modal">确认</button>
@@ -80,12 +86,12 @@
 
 	<script>
 		var token = appcan.locStorage.getVal('token');
-//				var token='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cL2x4bC41MjA6ODA4MFwvTWF0Y2hcL2JhYnlCdWRkeVwvcHVibGljXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNDU4NTYyMzA5LCJleHAiOjE0NjIxNjIzMDksIm5iZiI6MTQ1ODU2MjMwOSwianRpIjoiZjdlYmFmNjc4Mzc0YmM4Njc3ZTJiZDMyYTY0NzMwOGMifQ.4uAwv77rM17MlJtd4XCovFyj2Wm5toIxb7EJsM3gozs';
+		var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cL2x4bC41MjA6ODA4MFwvTWF0Y2hcL2JhYnlCdWRkeVwvcHVibGljXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNDU4NTYyMzA5LCJleHAiOjE0NjIxNjIzMDksIm5iZiI6MTQ1ODU2MjMwOSwianRpIjoiZjdlYmFmNjc4Mzc0YmM4Njc3ZTJiZDMyYTY0NzMwOGMifQ.4uAwv77rM17MlJtd4XCovFyj2Wm5toIxb7EJsM3gozs';
 		appcan.ready(function() {
 			//从云端获取列表
 			dairyList();
 		});
-//				dairyList();
+		//				dairyList();
 		function dairyList() {
 			$('#dairyList').text('');
 			var url = 'http://192.168.155.1:8080/Match/babyBuddy/public/api/dairy';
@@ -140,22 +146,18 @@
 
 		function dairyUpdate(o) {
 			var id = $(o).attr('name');
-
-
-			var url = 'http://192.168.155.1:8080/Match/babyBuddy/public/api/dairy/'+id;
+			var url = 'http://192.168.155.1:8080/Match/babyBuddy/public/api/dairy/' + id;
 			$.ajax({
 				url: url,
 				type: 'get',
-
 				headers: {
 					'Authorization': ' Bearer ' + token
 				},
 				success: function(d) {
-
-					if(d.code=='200'){
-						var str='<input type="hidden" id="dairyId" /><div class="form-group form-group-label"><label class="floating-label" for="title">标题</label><input value="'+d.data.title+'" class="form-control" id="title" type="text"></div><div class="form-group  form-group-label"><label class="floating-label" for="content">内容</label><textarea class="form-control" id="content" rows="10">'+d.data.content+'</textarea></div>';
+					if (d.code == '200') {
+						$('#title').val(d.data.title);
+						$('#content').val(d.data.content);
 						$("#dairyId").val(d.data.id);
-						$('#dairyUpdate .modal-inner').html(str);
 						$('#dairyUpdate').modal('show');
 					}
 				},
@@ -166,12 +168,15 @@
 		}
 
 		function update() {
+			var url = "http://192.168.155.1:8080/Match/babyBuddy/public/api/dairy";
 			var data = {
 				'title': $('#title').val(),
-				'content': $('#content').val(),
-				'id':$('#dairyId').val()
+				'content': $('#content').val()
 			}
-			var url = 'http://192.168.155.1:8080/Match/babyBuddy/public/api/dairy/update';
+			if ($('#dairyId').val() != '') {
+				data.id = $('#dairyId').val();
+				var url = 'http://192.168.155.1:8080/Match/babyBuddy/public/api/dairy/update';
+			}
 			$.ajax({
 				url: url,
 				type: 'POST',
