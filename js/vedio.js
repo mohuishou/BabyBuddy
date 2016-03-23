@@ -21,8 +21,6 @@ function rtcInit() {
 	login();
 };
 
-
-
 /**
  * 登陆回调，返回是否登陆成功
  */
@@ -47,36 +45,39 @@ function upgateLogStatus(opCode, dataType, data) {
 
 function updateCallStatus(opCode, dataType, data) {
 	alert(data);
-	//  	if ("OK" == data.substring(0, 2)) {
-	//  		var status = data.split("OK:")[1];
-	//  		var showStr = "";
-	//  		var str = '';
-	//  		if ("NORMAL" == status) {
-	//  			showStr = "call";
-	//  			str = '呼叫';
-	//  		} else if ("INCOMING" == status) {
-	//  			showStr = "accept";
-	//  			str = "接听";
-	//  		}
-	//  		// else if("CALLING" == status)
-	//  		// {
-	//  		//     showStr = "hangUp";
-	//  		//     str="挂断";
-	//  		// }
-	//  		$('#call').attr('name', showStr);
-	//  		$('#call').text(str);
-	//  	} else {
-	//  		alert(data);
-	//  	}
-}
+	if ("OK" == data.substring(0, 2)) {
+		var status = data.split("OK:")[1];
+		var showStr = "";
+		var str = '';
+		if ("NORMAL" == status) {
+			$('#footer').removeClass('uhide');
+		} else if ("INCOMING" == status) {
+			appcan.window.alert({
+				title: '提示',
+				content: '监护人通话请求',
+				buttons: ['接听', '挂断'],
+				callback: function(err, data, dataType, optId) {
+					if (data == 0) {
+						accept();
 
+					} else {
+						hangUp();
+					}
+				}
+			});
+		}
+
+	} else {
+		alert(data);
+	}
+}
 
 /**
  *监控中心回调 
  */
 function upgateGlobalStatus(opCode, dataType, data) {
 	//  	console.log(data);
-	alert(data);
+//	alert(data);
 }
 
 /**
@@ -84,20 +85,25 @@ function upgateGlobalStatus(opCode, dataType, data) {
  * 
  */
 function login() {
+	//屏幕的缩放比例
+	var bs = screen.availWidth / $('body').width();
 	var header = $('header').height();
-	var footer = $('#footer').height();
-	var empty = $(document).height() - header - footer;
-	var width = $(document).width();
+	var main = $('body').height() - $('#footer').height();
+	//  	var footer=$('#footer').height()*bs;
+	//  	alert(screen.availHeight);
+	var empty = Math.floor(main * bs);
+
+	var width = screen.availWidth;
 	jsonViewConfig = {
 			"localView": {
 				"x": "0",
-				"y": header.toString(),
-				"w": Math.floor((1 / 3) * empty).toString(),
-				"h": Math.floor((1 / 3) * width).toString()
+				"y": '0',
+				"w": Math.floor((1 / 3) * width).toString(),
+				"h": Math.floor((4 / 9) * width).toString()
 			},
 			"remoteView": {
 				"x": "0",
-				"y": header.toString(),
+				"y": '0',
 				"w": width.toString(),
 				"h": empty.toString()
 			}
@@ -106,7 +112,7 @@ function login() {
 	userName = "4892";
 	/*--uexESurfingRtc.login函数需要传入的参数是一个json字符串，所以需要调用JSON.stringify方法将json对象转换为字符串--*/
 	jsonDtr = JSON.stringify(jsonViewConfig);
-	alert(jsonDtr);
+	console.log(jsonDtr);
 	uexESurfingRtc.login(jsonDtr, userName);
 }
 
