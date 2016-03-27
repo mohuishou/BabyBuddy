@@ -94,13 +94,31 @@
 			function keyBack() {
 				if (appcan.locStorage.getVal('token') && appcan.locStorage.getVal('uid')) {
 				} else {
-					uexWindow.setReportKey(0, 1);
+					exitApp();
 				}
-				uexWindow.onKeyPressed = function(keyCode) {
-					alert('对不起，您还没有注册或者登陆成功哦');
-					console.log(keyCode);
-				}
+				
 			}
+			
+			/**
+		 * 双击退出app
+		 */
+		function exitApp(){
+			var c1c=0;
+			//拦截返回键，双击退出应用
+			uexWindow.setReportKey(0, 1);
+			uexWindow.onKeyPressed = function() {
+				if (c1c > 0) {
+					uexWidgetOne.exit(0);
+				} else {
+					uexWindow.toast(0, 5, '对不起您还没有注册或者是登陆，再按一次退出应用', 1000);
+					c1c = 1;
+					setTimeout(function() {
+						c1c = 0;
+					}, 2000);
+				}
+				return false;
+			};
+		}
 		</script>
 		<script src="./js/login.js"></script>
 	</body>
